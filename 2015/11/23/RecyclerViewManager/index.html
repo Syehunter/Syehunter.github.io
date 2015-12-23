@@ -1,0 +1,1197 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="My Conquest Is the Sea of Stars." />
+
+
+
+  <meta name="keywords" content="Android， RecyclerView," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Syehunter" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="RecyclerViewManager实现了RecyclerView的下拉刷新和上拉加载，支持添加多个header或footer，支持onItemClick和onItemLongClik，允许设置RecyclerMode来禁止上拉或下拉等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RecyclerViewManager">
+<meta property="og:url" content="http://z.sye.space/2015/11/23/RecyclerViewManager/index.html">
+<meta property="og:site_name" content="Syehunter">
+<meta property="og:description" content="RecyclerViewManager实现了RecyclerView的下拉刷新和上拉加载，支持添加多个header或footer，支持onItemClick和onItemLongClik，允许设置RecyclerMode来禁止上拉或下拉等。">
+<meta property="og:image" content="http://7xn4z4.com1.z0.glb.clouddn.com/RecyclerViewManager.gif">
+<meta property="og:updated_time" content="2015-11-23T15:33:11.990Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RecyclerViewManager">
+<meta name="twitter:description" content="RecyclerViewManager实现了RecyclerView的下拉刷新和上拉加载，支持添加多个header或footer，支持onItemClick和onItemLongClik，允许设置RecyclerMode来禁止上拉或下拉等。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: '',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> RecyclerViewManager | Syehunter </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?539acdefdd0f206f531f52a400064a9d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Syehunter</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="#" class="st-search-show-outputs">
+            <i class="menu-item-icon icon-next-search"></i> <br />
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'chQjF3efA2ty1TUsREjN','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              RecyclerViewManager
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-11-23T21:19:59+08:00" content="2015-11-23">
+            2015-11-23
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Android/" itemprop="url" rel="index">
+                  <span itemprop="name">Android</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/23/RecyclerViewManager/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/23/RecyclerViewManager/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p><strong>原创博客，转载请注明出处： <a href="http://z.sye.space/2015/11/23/RecyclerViewManager/">http://z.sye.space/2015/11/23/RecyclerViewManager/</a></strong></p>
+<p>从Google推出RecyclerView后，这个新的控件就几乎取代了经典的ListView和GridView。<br><code>RecyclerView is a more advanced and flexible version of ListView. This widget is a container for large sets of views that can be recycled and scrolled very efficiently. Use the RecyclerView widget when you have lists with elements that change dynamically.</code></p>
+<p>但是源生的RecyclerView也有一些缺点，Google并没有同ListView一样为他提供addHeader()和addFooter()的方法，同时不知道为什么甚至没有提供onItemClick()这个需求甚广的方法。至于下拉刷新和上拉加载这两个功能没有倒还是情有可原，毕竟之前的ListView也没有添加这个功能。</p>
+<p>使用RecyclerViewManager最大的优点就在于除了将你的RecyclerView替换为RefreshRecyclerView外，并不需要改动任何的Adapter或ViewHolder中的代码就可以使用。</p>
+<p>这篇文章介绍了如何为RecyclerView设置Header和Footer，同时添加下拉和上拉的功能，并且支持onItemClick()和onItemOnClick()；</p>
+<p><img src="http://7xn4z4.com1.z0.glb.clouddn.com/RecyclerViewManager.gif" alt="RecyclerViewManagerDemo.gif"></p>
+<p>为RecyclerView添加Header和Footer通过自定义一个RecyclerView.Adapter来实现(RefreshRecyclerViewAdapter)，首先我们通过getItemViewType()这个方法来为Header和Footer设置专属的viewType： </p>
+<pre><code><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">getItemViewType</span><span class="params">(<span class="keyword">int</span> position)</span> </span>{
+    <span class="keyword">int</span> mHeadersCount = getHeadersCount();
+    <span class="keyword">if</span> (<span class="keyword">null</span> != mAdapter) {
+        <span class="keyword">int</span> itemCount = mAdapter.getItemCount();
+        <span class="keyword">if</span> (position &lt; mHeadersCount) {
+            <span class="comment">//current itemType is Header</span>
+            mHeaderViewType = TYPE_HEADER_VIEW + position;
+            mHeaderViewTypes.add(mHeaderViewType);
+            <span class="keyword">return</span> mHeaderViewType;
+        } <span class="function"><span class="keyword">else</span> <span class="title">if</span> <span class="params">(position &gt;= mHeadersCount &amp;&amp; position &lt; mHeadersCount + itemCount)</span> </span>{
+            <span class="comment">//current itemType is item defined by user</span>
+            <span class="keyword">int</span> itemViewType = mAdapter.getItemViewType(position - mHeadersCount);
+            <span class="keyword">if</span> (itemViewType &lt;= TYPE_HEADER_VIEW + mHeadersCount) {
+                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"your adapter's return value of "</span> +
+                        <span class="string">"getItemViewType() must &gt; (Integer.MinValue + your headersCount)"</span>);
+            }
+            <span class="keyword">return</span> itemViewType;
+        } <span class="keyword">else</span> {
+            <span class="comment">//current itemType is Footer</span>
+            <span class="keyword">int</span> mFooterViewType = TYPE_FOOTER_VIEW + position - itemCount;
+            mFooterViewTypes.add(mFooterViewType);
+            <span class="keyword">return</span> mFooterViewType;
+        }
+    } <span class="keyword">else</span> {
+        <span class="keyword">return</span> AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER;
+    }
+}
+</code></pre><p>通过判断当前item的position来判断是否是header或者footer，如果不是header或footer则返回user自己定义的itemViewTyep，其中的两个常量：</p>
+<pre><code><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_HEADER_VIEW = Integer.MIN_VALUE;
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TYPE_FOOTER_VIEW = TYPE_HEADER_VIEW + <span class="number">1</span>;
+</code></pre><p>mAdapter就是user定义的继承于RecyclerView.Adapter的自定义Adapter(这句话我写了4遍，然而总觉得哪里不对…)。</p>
+<p>当我们为headers和footers中的每个item都分别定义了viewType后，还需要在onCreateViewHolder()和onBindViewHolder()中分别进行处理。在onCreateViewHolder中，为header和footer自定义了一个ViewHolder–&gt;RecyclerHeaderViewHolder，代码非常简单就是一个空实现类。</p>
+<pre><code>public <span class="class"><span class="keyword">class</span> <span class="title">RecyclerHeaderViewHolder</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span> {</span>
+
+public <span class="type">RecyclerHeaderViewHolder</span>(<span class="type">View</span> itemView) {
+    <span class="keyword">super</span>(itemView);
+}
+</code></pre><p>通过计算，我们从mHeaderViews(ArrayList<view>)和mFooterViews(ArrayList<view>)中获取对应的position的view将其填入ViewHolder并返回。</view></view></p>
+<pre><code><span class="annotation">@Override</span>
+<span class="keyword">public</span> RecyclerView.<span class="function">ViewHolder <span class="title">onCreateViewHolder</span><span class="params">(ViewGroup parent, <span class="keyword">int</span> viewType)</span> </span>{
+    <span class="keyword">if</span> (<span class="keyword">null</span> != mAdapter) {
+        <span class="keyword">if</span> (mHeaderViewTypes.contains(viewType)) {
+            <span class="comment">//currentPosition in mHeaderViews is (viewType - TYPE_HEADER_VIEW)</span>
+            <span class="keyword">return</span> <span class="keyword">new</span> RecyclerHeaderViewHolder(mHeaderViews.get(viewType - TYPE_HEADER_VIEW));
+        } <span class="keyword">else</span> <span class="keyword">if</span> (mFooterViewTypes.contains(viewType)) {
+            <span class="comment">//currentPosition in mFooterViews is (viewType - headersCount - TYPE_FOOTER_VIEW)</span>
+            <span class="keyword">return</span> <span class="keyword">new</span> RecyclerHeaderViewHolder(mFooterViews.get(viewType - getHeadersCount()
+                    - TYPE_FOOTER_VIEW));
+        } <span class="keyword">else</span> {
+            <span class="function"><span class="keyword">return</span> mAdapter.<span class="title">onCreateViewHolder</span><span class="params">(parent, viewType)</span></span>;
+        }
+    }
+    <span class="keyword">return</span> <span class="keyword">null</span>;
+}
+</code></pre><p>在onBindViewHolder中，我们需要特殊处理的是LayoutManager为StaggeredGridLayoutManager时的情况。因为GridLayoutManager和StaggeredGridLayoutManager中的item可能不会独占一行(讲道理的话几乎没有独占一行的情况，不然直接用LinearLayoutManager了)，GridLayoutManager可以设置SpanSizeLookup(这个东西下面会提到)来控制header占满整行，而StaggeredGridLayoutManager只能通过设置其item的LayoutParams来实现这一效果(params.setFullSpan(true))。 </p>
+<p>这里我本是想通过</p>
+<pre><code>ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+<span class="keyword">if</span> (layoutParams <span class="keyword">instanceof</span> StaggeredGridLayoutManager.LayoutParams) {
+    ((StaggeredGridLayoutManager.LayoutParams) layoutParams).setFullSpan(<span class="literal">true</span>);
+}
+</code></pre><p>这种方法来判断当前是否是StaggeredGridLayoutManager，从而进行针对性的设置header和footer的宽度，但是发现获得的layoutParams总是为null，而如果使用下面这种方法就可以</p>
+<pre><code><span class="keyword">View</span> <span class="keyword">view</span> = holder.itemView.findViewById(xxxx);<span class="comment">//itemView最外层的View</span>
+<span class="keyword">if</span> (<span class="keyword">view</span>.getLayoutParams instanceof StaggeredXXX){
+     <span class="comment">//do something</span>
+}
+</code></pre><p>所以我采取了一种曲线救国的方式，通过传入LayoutManager再进行相应的判断。关于params为null的原因有查找了蛮多，但是提供的解决方案都不可行，希望有大神看到可以指正~</p>
+<p>同时，我们在onBindViewHolder中还可以做一件事，就是为item增加onItemClick()和onItemLongClick()方法，是非常简单的接口，应该一看就可以明白：</p>
+<pre><code><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onBindViewHolder</span><span class="params">(<span class="keyword">final</span> RecyclerView.ViewHolder holder, <span class="keyword">final</span> <span class="keyword">int</span> position)</span> </span>{
+    <span class="keyword">if</span> (<span class="keyword">null</span> != mAdapter) {
+        <span class="keyword">if</span> (position &gt;= getHeadersCount() &amp;&amp; position &lt; getHeadersCount() + mAdapter.getItemCount()) {
+            mAdapter.onBindViewHolder(holder, position - getHeadersCount());
+            <span class="keyword">if</span>(<span class="keyword">null</span> != mOnItemClickListener){
+                holder.itemView.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() {
+                    <span class="annotation">@Override</span>
+                    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>{
+                        mOnItemClickListener.onItemClick(holder, position - getHeadersCount());
+                    }
+                });
+            }
+            <span class="keyword">if</span> (<span class="keyword">null</span> != mOnItemLongClickListener){
+                holder.itemView.setOnLongClickListener(<span class="keyword">new</span> View.OnLongClickListener() {
+                    <span class="annotation">@Override</span>
+                    <span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onLongClick</span><span class="params">(View v)</span> </span>{
+                        <span class="keyword">return</span> mOnItemLongClickListener.onItemLongCLick(holder, position - getHeadersCount());
+                    }
+                });
+            }
+        } <span class="keyword">else</span> {
+            <span class="keyword">if</span>(<span class="keyword">null</span> != mLayoutManager &amp;&amp; mLayoutManager <span class="keyword">instanceof</span> StaggeredGridLayoutManager){
+                StaggeredGridLayoutManager.LayoutParams params = <span class="keyword">new</span> StaggeredGridLayoutManager.LayoutParams(
+                        StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT,
+                        StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT);
+                params.setFullSpan(<span class="keyword">true</span>);
+                holder.itemView.setLayoutParams(params);
+            }
+        }
+    }
+}
+</code></pre><p>然而到这里还没有结束。我们还要涉及到一个RecyclerView.AdapterDataObserver。这个AdapterDataObserver又是什么呢？OK，我们简单的介绍一下，首先要明白我们定义的Adapter是什么。可以认为Adapter是连接Data和View的一个枢纽，View需要展示的数据由Adapter判断对应的position后再将数据回传给View。View的变化取决于Adapter中数据的变化，当Adapter中的数据发生变化时要通知View也做相应的转变，这也就是观察者模式，AdapterDataObserverable就是这个观察者。Adapter.notifyDataSetChanged()就是这个原理，实际上是通过</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">final</span> <span class="function"><span class="keyword">void</span> <span class="title">notifyDataSetChanged</span><span class="params">()</span> </span>{
+        mObservable.notifyChanged();
+    }
+</code></pre><p>这种方式来通知View的更新，mObservable就是这个观察者的对象。也就是说当我们添加了header和footer后，还需要让观察者来通知view做更新，所以我们需要为自定义的这个RefreshRecyclerViewAdapter来注册新的一个观察者。</p>
+<pre><code><span class="keyword">private</span> RecyclerView.AdapterDataObserver mDataObserver = <span class="keyword">new</span> RecyclerView.AdapterDataObserver() {
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onChanged</span><span class="params">()</span> </span>{
+        <span class="keyword">super</span>.onChanged();
+        notifyDataSetChanged();
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onItemRangeChanged</span><span class="params">(<span class="keyword">int</span> positionStart, <span class="keyword">int</span> itemCount)</span> </span>{
+        <span class="keyword">super</span>.onItemRangeChanged(positionStart, itemCount);
+        notifyItemRangeChanged(positionStart + getHeadersCount(), itemCount);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onItemRangeInserted</span><span class="params">(<span class="keyword">int</span> positionStart, <span class="keyword">int</span> itemCount)</span> </span>{
+        <span class="keyword">super</span>.onItemRangeInserted(positionStart, itemCount);
+        notifyItemRangeInserted(positionStart + getHeadersCount(), itemCount);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onItemRangeRemoved</span><span class="params">(<span class="keyword">int</span> positionStart, <span class="keyword">int</span> itemCount)</span> </span>{
+        <span class="keyword">super</span>.onItemRangeRemoved(positionStart, itemCount);
+        notifyItemRangeRemoved(positionStart + getHeadersCount(), itemCount);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onItemRangeMoved</span><span class="params">(<span class="keyword">int</span> fromPosition, <span class="keyword">int</span> toPosition, <span class="keyword">int</span> itemCount)</span> </span>{
+        <span class="keyword">super</span>.onItemRangeMoved(fromPosition, toPosition, itemCount);
+        notifyItemRangeChanged(fromPosition + getHeadersCount(), toPosition + getHeadersCount() + itemCount);
+    }
+};
+</code></pre><p>这里面的几个方法都是干嘛的呢？onChanged()就不用说了吧~</p>
+<ul>
+<li>onItemRangeChanged() –&gt; 刷新从<code>positionStart</code>位置开始<code>itemCount</code>数量的item</li>
+<li>onItemRangeInserted() –&gt; 从第<code>position</code>位置开始插入了<code>itemCount</code>条新的item(即批量增加)后进行刷新。</li>
+<li>onItemRangeRemoced() –&gt; 从第<code>position</code>位置开始删除了<code>itemCount</code>条item(批量删除)后进行刷新。</li>
+<li>onItemRangeMoved(0 –&gt; 从第<code>position</code>位置开始将<code>itemCount</code>条item移动到第<code>toPosition</code>条位置后进行刷新。</li>
+</ul>
+<p>在RefreshRecyclerViewAdapter的构造方法中为adapter注册观察者。</p>
+<pre><code><span class="function"><span class="keyword">public</span> <span class="title">RefreshRecyclerViewAdapter</span><span class="params">(RecyclerView.Adapter adapter)</span> </span>{
+    setAdapter(adapter);
+}
+
+<span class="comment">/**
+ * Set the adapter for RecyclerView
+ *
+ * <span class="doctag">@param</span> adapter
+ */</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setAdapter</span><span class="params">(RecyclerView.Adapter&lt;RecyclerView.ViewHolder&gt; adapter)</span> </span>{
+    <span class="keyword">if</span> (<span class="keyword">null</span> != adapter) {
+        <span class="keyword">if</span> (!(adapter <span class="keyword">instanceof</span> RecyclerView.Adapter)) {
+            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"A RecyclerView.Adapter is Need"</span>);
+        }
+
+        <span class="keyword">if</span> (<span class="keyword">null</span> != mAdapter) {
+            notifyItemRangeRemoved(getHeadersCount(), mAdapter.getItemCount());
+            mAdapter.unregisterAdapterDataObserver(mDataObserver);
+        }
+
+        mAdapter = adapter;
+        mAdapter.registerAdapterDataObserver(mDataObserver);
+        notifyItemRangeInserted(getHeadersCount(), mAdapter.getItemCount());
+    }
+}
+</code></pre><p>嗯…刚刚我们有提到GridLayoutManager的一个方法setSpanSizeLookUp(),接收一个GridLayoutManager.SpanSizeLookup参数，这个SpanSizeLookup怎么用呢？我们先构造一个它的实现类：</p>
+<pre><code>public <span class="class"><span class="keyword">class</span> <span class="title">HeaderSapnSizeLookUp</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">GridLayoutManager</span>.<span class="title">SpanSizeLookup</span> {</span>
+
+    <span class="annotation">@Override</span>
+    public int getSpanSize(int position) {
+        <span class="keyword">return</span> <span class="number">0</span>;
+    }
+}
+</code></pre><p>里面只有一个方法getSpanSize()，通过GridLayoutManager源码，我们看到这个返回的Integer数据最终被用在了这个地方：</p>
+<pre><code>@<span class="function">Override
+<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onInitializeAccessibilityNodeInfoForItem</span><span class="params">(RecyclerView.Recycler recycler,
+        RecyclerView.State state, View host, AccessibilityNodeInfoCompat info)</span> </span>{
+
+    <span class="comment">//……</span>
+
+    <span class="keyword">if</span> (mOrientation == HORIZONTAL) {
+        info.setCollectionItemInfo(AccessibilityNodeInfoCompat.CollectionItemInfoCompat.obtain(
+                glp.getSpanIndex(), glp.getSpanSize(),
+                spanGroupIndex, <span class="number">1</span>,
+                mSpanCount &gt; <span class="number">1</span> &amp;&amp; glp.getSpanSize() == mSpanCount, <span class="literal">false</span>));
+    } <span class="keyword">else</span> { <span class="comment">// VERTICAL</span>
+        info.setCollectionItemInfo(AccessibilityNodeInfoCompat.CollectionItemInfoCompat.obtain(
+                spanGroupIndex , <span class="number">1</span>,
+                glp.getSpanIndex(), glp.getSpanSize(),
+                mSpanCount &gt; <span class="number">1</span> &amp;&amp; glp.getSpanSize() == mSpanCount, <span class="literal">false</span>));
+    }
+}
+</code></pre><p>也就是说这个方法实际上是设置当前的item占满几个span。于是HeaderSapnSizeLookUp的代码可以做如下修改：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HeaderSapnSizeLookUp</span> <span class="keyword">extends</span> <span class="title">GridLayoutManager</span>.<span class="title">SpanSizeLookup</span> </span>{
+
+    <span class="keyword">private</span> RefreshRecyclerViewAdapter mAdapter;
+    <span class="keyword">private</span> <span class="keyword">int</span> mSpanSize;
+
+    <span class="function"><span class="keyword">public</span> <span class="title">HeaderSapnSizeLookUp</span><span class="params">(RefreshRecyclerViewAdapter adapter, <span class="keyword">int</span> spanSize)</span></span>{
+        <span class="keyword">this</span>.mAdapter = adapter;
+        <span class="keyword">this</span>.mSpanSize = spanSize;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getSpanSize</span><span class="params">(<span class="keyword">int</span> position)</span> </span>{
+        <span class="keyword">boolean</span> isHeaderOrFooter = mAdapter.isHeader(position) || mAdapter.isFooter(position);
+        <span class="keyword">return</span> isHeaderOrFooter ? mSpanSize : <span class="number">1</span>;
+    }
+}
+</code></pre><p>isHeader()和isFooter是定义在RefreshRecyclerViewAdapter中的两个方法来判断当前position对应的是否是header或者footer，如果是的话设置其占满整行，否则返回1；</p>
+<p>到这里为止，为RecyclerView添加header和footer就全部完成了。接下来我们处理下拉刷新和上拉加载。</p>
+<p>首先谈一下上拉加载，实际上上拉加载和ListView实现上拉加载的方式一样，都是通过判断当前的ScrollState来决定是否允许上拉加载。唯一有些不同的就是RecyclerView有三种布局，需要对每种布局分别判断当前的lastVisibleItemPosition是否是RecyclerView中的最后一个。</p>
+<p>这里我定义了一个LoadMoreRecyclerViewListener,通过recyclerView.addOnScrollListener()来为RecyclerView设置上拉加载.直接贴代码：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadMoreRecyclerListener</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">OnScrollListener</span> </span>{
+
+    <span class="keyword">private</span> Context mContext;
+    <span class="keyword">private</span> RecyclerMode mode;
+
+    <span class="keyword">private</span> RefreshRecyclerViewAdapter mAdapter;
+
+    <span class="keyword">public</span> <span class="keyword">int</span> firstVisibleItemPosition;
+    <span class="keyword">private</span> <span class="keyword">int</span> lastVisibleItemPosition;
+
+    <span class="keyword">private</span> <span class="keyword">int</span>[] mPositions;
+    <span class="keyword">private</span> <span class="keyword">int</span> mScrollState;
+    <span class="keyword">private</span> OnLoadMoreListener mOnLoadMoreListener;
+    <span class="keyword">private</span> OnBothRefreshListener mOnBothRefreshListener;
+    <span class="keyword">private</span> RefreshLoadingLayout mFooterLoadingLayout;
+
+    <span class="keyword">private</span> <span class="keyword">boolean</span> isLoading = <span class="keyword">false</span>;
+
+    <span class="function"><span class="keyword">public</span> <span class="title">LoadMoreRecyclerListener</span><span class="params">(Context context, RecyclerMode mode)</span> </span>{
+        <span class="keyword">this</span>.mContext = context;
+        <span class="keyword">this</span>.mode = mode;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onScrolled</span><span class="params">(RecyclerView recyclerView, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy)</span> </span>{
+        <span class="keyword">super</span>.onScrolled(recyclerView, dx, dy);
+
+        RecyclerView.LayoutManager mLayoutManager = recyclerView.getLayoutManager();
+
+        <span class="comment">//初始化firstVisibleItemPosition和lastVisibleItemPosition</span>
+        <span class="keyword">if</span> (<span class="keyword">null</span> != mLayoutManager) {
+            <span class="keyword">if</span> (mLayoutManager <span class="keyword">instanceof</span> LinearLayoutManager) {
+                firstVisibleItemPosition = ((LinearLayoutManager) mLayoutManager)
+                        .findFirstVisibleItemPosition();
+                lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager)
+                        .findLastVisibleItemPosition();
+            } <span class="keyword">else</span> <span class="keyword">if</span> (mLayoutManager <span class="keyword">instanceof</span> GridLayoutManager) {
+                firstVisibleItemPosition = ((GridLayoutManager) mLayoutManager)
+                        .findFirstVisibleItemPosition();
+                lastVisibleItemPosition = ((GridLayoutManager) mLayoutManager)
+                        .findLastVisibleItemPosition();
+            } <span class="keyword">else</span> <span class="keyword">if</span> (mLayoutManager <span class="keyword">instanceof</span> StaggeredGridLayoutManager) {
+                StaggeredGridLayoutManager mStaggeredGridLayoutManager =
+                        (StaggeredGridLayoutManager) mLayoutManager;
+                <span class="keyword">if</span> (<span class="keyword">null</span> == mPositions) {
+                    mPositions = <span class="keyword">new</span> <span class="keyword">int</span>[mStaggeredGridLayoutManager.getSpanCount()];
+                }
+                mStaggeredGridLayoutManager.findFirstVisibleItemPositions(mPositions);
+                mStaggeredGridLayoutManager.findLastVisibleItemPositions(mPositions);
+                firstVisibleItemPosition = getFirst(mPositions);
+                lastVisibleItemPosition = getLast(mPositions);
+            } <span class="keyword">else</span> {
+                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(
+                        <span class="string">"The layoutManager must be one of LinearLayoutManager, "</span> +
+                                <span class="string">"GridLayoutManager or StaggeredGridLayoutManager"</span>);
+            }
+        }
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onScrollStateChanged</span><span class="params">(RecyclerView recyclerView, <span class="keyword">int</span> newState)</span> </span>{
+        <span class="keyword">super</span>.onScrollStateChanged(recyclerView, newState);
+
+        <span class="keyword">if</span> (RecyclerMode.BOTH != mode &amp;&amp; RecyclerMode.BOTTOM != mode) {
+            <span class="keyword">return</span>;
+        }
+
+        <span class="keyword">if</span> (<span class="keyword">null</span> == recyclerView.getAdapter()
+                || !(recyclerView.getAdapter() <span class="keyword">instanceof</span> RefreshRecyclerViewAdapter)) {
+            <span class="keyword">return</span>;
+        }
+
+        mAdapter = (RefreshRecyclerViewAdapter) recyclerView.getAdapter();
+
+        mScrollState = newState;
+        RecyclerView.LayoutManager mLayoutManager = recyclerView.getLayoutManager();
+        <span class="keyword">int</span> visibleItemCount = mLayoutManager.getChildCount();
+        <span class="keyword">int</span> totalItemCount = mLayoutManager.getItemCount();
+
+        <span class="keyword">if</span> ((visibleItemCount &gt; <span class="number">0</span>
+                &amp;&amp; mScrollState == RecyclerView.SCROLL_STATE_IDLE
+                &amp;&amp; lastVisibleItemPosition &gt;= totalItemCount - <span class="number">1</span>)) {
+
+            <span class="keyword">if</span>(isLoading){
+                <span class="keyword">return</span>;
+            }
+
+            <span class="keyword">if</span> (RecyclerMode.BOTH == mode) {
+                <span class="keyword">if</span> (<span class="keyword">null</span> != mOnBothRefreshListener) {
+                    addFooterLoadinLayout(recyclerView);
+                    mOnBothRefreshListener.onLoadMore();
+                    <span class="keyword">return</span>;
+                }
+            } <span class="keyword">else</span> <span class="keyword">if</span> (RecyclerMode.BOTTOM == mode) {
+                <span class="keyword">if</span> (<span class="keyword">null</span> != mOnLoadMoreListener) {
+                    addFooterLoadinLayout(recyclerView);
+                    mOnLoadMoreListener.onLoadMore();
+                    <span class="keyword">return</span>;
+                }
+            }
+
+        }
+    }
+
+    <span class="comment">/**
+     * 添加LoadMore布局
+     */</span>
+    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addFooterLoadinLayout</span><span class="params">(RecyclerView recyclerView)</span> </span>{
+        isLoading = <span class="keyword">true</span>;
+        <span class="keyword">if</span> (<span class="keyword">null</span> == mFooterLoadingLayout) {
+            mFooterLoadingLayout = <span class="keyword">new</span> RotateLoadingLayout(mContext, RecyclerMode.BOTTOM);
+            mAdapter.addFooterView(mFooterLoadingLayout);
+            recyclerView.smoothScrollToPosition(mAdapter.getItemCount() - <span class="number">1</span>);
+        }
+        mFooterLoadingLayout.onRefresh();
+        mFooterLoadingLayout.setVisibility(View.VISIBLE);
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOnLoadMoreListener</span><span class="params">(OnLoadMoreListener onLoadMoreListener)</span> </span>{
+        <span class="keyword">this</span>.mOnLoadMoreListener = onLoadMoreListener;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOnBothRefreshListener</span><span class="params">(OnBothRefreshListener onBothRefreshListener)</span> </span>{
+        <span class="keyword">this</span>.mOnBothRefreshListener = onBothRefreshListener;
+    }
+
+    <span class="comment">/**
+     * StaggeredGridLayoutManager firstVisibleItemPosition
+     *
+     * <span class="doctag">@param</span> mPositions
+     * <span class="doctag">@return</span>
+     */</span>
+    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getFirst</span><span class="params">(<span class="keyword">int</span>[] mPositions)</span> </span>{
+        <span class="keyword">int</span> first = mPositions[<span class="number">0</span>];
+        <span class="keyword">for</span> (<span class="keyword">int</span> value : mPositions) {
+            <span class="keyword">if</span> (value &lt; first) {
+                first = value;
+            }
+        }
+        <span class="keyword">return</span> first;
+    }
+
+    <span class="comment">/**
+     * StaggeredGridLayoutManager lastVisibleItemPosition
+     *
+     * <span class="doctag">@param</span> mPositions
+     * <span class="doctag">@return</span>
+     */</span>
+    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getLast</span><span class="params">(<span class="keyword">int</span>[] mPositions)</span> </span>{
+        <span class="keyword">int</span> last = mPositions[<span class="number">0</span>];
+        <span class="keyword">for</span> (<span class="keyword">int</span> value : mPositions) {
+            <span class="keyword">if</span> (value &gt; last) {
+                last = value;
+            }
+        }
+        <span class="keyword">return</span> last;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMode</span><span class="params">(RecyclerMode mode)</span> </span>{
+        <span class="keyword">this</span>.mode = mode;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRefreshComplete</span><span class="params">()</span></span>{
+        <span class="keyword">if</span> (<span class="keyword">null</span> != mAdapter &amp;&amp; mAdapter.getFootersCount() &gt; <span class="number">0</span>){
+            <span class="keyword">if</span> (mAdapter.getLastFooter() <span class="keyword">instanceof</span> RefreshLoadingLayout){
+                isLoading = <span class="keyword">false</span>;
+                mFooterLoadingLayout.setVisibility(View.GONE);
+            }
+        }
+    }
+}
+</code></pre><p>里面定义的RecyclerMode可以设置是否允许下拉刷新或上拉加载，一个简单的枚举类：</p>
+<pre><code>public <span class="class"><span class="keyword">enum</span> <span class="title">RecyclerMode</span> {</span>
+
+    <span class="constant">NONE</span>, <span class="constant">BOTH</span>, <span class="constant">TOP</span>, <span class="constant">BOTTOM</span>
+
+}
+</code></pre><ul>
+<li>NONE –&gt; 不允许下拉刷新和上拉加载</li>
+<li>BOTH –&gt; 两种模式都允许</li>
+<li>TOP –&gt; 只允许下拉刷新</li>
+<li>BOTTOM –&gt; 只允许上拉加载</li>
+</ul>
+<p>好啦，现在只剩下下拉刷新啦…</p>
+<p>其实下拉刷新这里我偷了个懒，直接集成了<a href="https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh" target="_blank" rel="external">Ultra-Pull-To-Refresh</a>这个library，选择这个library的理由很简单，额…当然并不是我写不出来，而是这个library真的是我非常喜欢的一个library，支持多种风格，支持自定义头布局，支持所有的Layout，是一个功能非常强大的下拉刷新库！同时，如果你引用了我的RecyclerViewManager以后，就不用再在gradle里面配置compile啦…其他的需要做下拉刷新的页面一样可以使用Ultra-Pull-To-Refresh~</p>
+<p>我稍微改了下代码，让这个库可以禁止下拉刷新：</p>
+<pre><code>public <span class="class"><span class="keyword">class</span> <span class="title">RefreshRecyclerView</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">PtrFrameLayout</span> {</span>
+    <span class="comment">//…</span>
+
+    public void setRefreshHeader(<span class="type">View</span> header) {
+        mHeaderView = header;
+        setHeaderView(header);
+    }
+
+    <span class="annotation">@Override</span>
+    public boolean dispatchTouchEvent(<span class="type">MotionEvent</span> e) {
+        <span class="keyword">if</span> (<span class="literal">null</span> == mHeaderView){
+            <span class="keyword">return</span> dispatchTouchEventSupper(e);
+        }
+        <span class="keyword">return</span> <span class="keyword">super</span>.dispatchTouchEvent(e);
+    }
+}
+</code></pre><p>引入RecyclerViewManager的方法：</p>
+<pre><code><span class="keyword">allprojects</span> {
+    <span class="keyword">repositories</span> {
+        jcenter()
+        maven { url <span class="string">"https://jitpack.io"</span> }
+    }
+}
+
+<span class="keyword">dependencies</span> {
+        <span class="keyword">compile</span> <span class="string">'com.github.Syehunter:RecyclerViewManager:0.1.0'</span>
+}
+</code></pre><p>Layout:</p>
+<pre><code>&lt;<span class="tag">space</span><span class="class">.sye</span><span class="class">.z</span><span class="class">.library</span><span class="class">.widget</span><span class="class">.RefreshRecyclerView</span>
+    <span class="rule"><span class="attribute">android</span>:<span class="value">id=<span class="string">"@+id/recyclerView"</span>
+    android:layout_width=<span class="string">"match_parent"</span>
+    android:layout_height=<span class="string">"match_parent"</span>/&gt;</span></span>
+</code></pre><p>在Activity或其他地方引入：</p>
+<pre><code>recyclerView = (RefreshRecyclerView) findViewById(R.id.recyclerView);
+MyAdapter myAdapter = <span class="keyword">new</span> MyAdapter(); <span class="comment">//a RecyclerView.Adapter</span>
+
+RecyclerViewManager.with(myAdapter, <span class="keyword">new</span> LinearLayoutManager(<span class="keyword">this</span>))
+            .setMode(RecyclerMode.BOTH)
+            .addHeaderView(header)
+            .addHeaderView(header2)
+            .addFooterView(footer)
+            .addItemDecoration(decor)
+            setItemAnimator(mItemAnimator)
+            .setOnRefreshListener(<span class="keyword">new</span> OnBothRefreshListener() {
+                <span class="annotation">@Override</span>
+                <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onPullDown</span><span class="params">()</span> </span>{
+                    <span class="comment">//模拟网络请求</span>
+                    Message msg = <span class="keyword">new</span> Message();
+                    msg.what = PULL_DOWN;
+                    mHandler.sendMessageDelayed(msg, <span class="number">2000</span>);
+                }
+
+                <span class="annotation">@Override</span>
+                <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onLoadMore</span><span class="params">()</span> </span>{
+                    <span class="comment">//模拟网络请求</span>
+                    Message msg = <span class="keyword">new</span> Message();
+                    msg.what = LOAD_MORE;
+                    mHandler.sendMessageDelayed(msg, <span class="number">2000</span>);
+                }
+            })
+            .setOnItemClickListener(<span class="keyword">new</span> RefreshRecyclerViewAdapter.OnItemClickListener() {
+                <span class="annotation">@Override</span>
+                <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onItemClick</span><span class="params">(RecyclerView.ViewHolder holder, <span class="keyword">int</span> position)</span> </span>{
+                    Toast.makeText(MainActivity.<span class="keyword">this</span>, <span class="string">"item"</span> + position, Toast.LENGTH_SHORT).show();
+                }
+            })
+            .into(recyclerView, <span class="keyword">this</span>);
+
+<span class="keyword">private</span> Handler mHandler = <span class="keyword">new</span> Handler(){
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>{
+        <span class="keyword">switch</span> (msg.what){
+            <span class="keyword">case</span> PULL_DOWN:
+                mDatas.add(0, <span class="string">"new Item"</span>);
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> LOAD_MORE:
+                <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; <span class="number">10</span>; i++){
+                    mDatas.add(<span class="string">"item"</span> + (counts + i));
+                }
+                counts = counts + <span class="number">10</span>;
+                <span class="keyword">break</span>;
+        }
+        RecyclerViewManager.onRefreshCompleted();
+        RecyclerViewManager.notifyDataSetChanged();
+    }
+};
+</code></pre><p>需要注意的是如果你的RecyclerMode为BOTH的话，请使用onRefreshListener(),如果为TOP使用onPullDownListener()，BOTTOM则使用onLoadMoreListener();</p>
+<p><a href="https://github.com/Syehunter/RecyclerViewManager" target="_blank" rel="external">github地址</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android，-RecyclerView/" rel="tag">#Android， RecyclerView</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/20/ChartView/" rel="next">自定义图表ChartView</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/11/23/RecyclerViewManager/"
+                   data-title="RecyclerViewManager" data-url="http://z.sye.space/2015/11/23/RecyclerViewManager/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Syehunter" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Syehunter</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">My Conquest Is the Sea of Stars.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Syehunter" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2675266877?source=blog" target="_blank">Weibo</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Syehunter</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"syehunter"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

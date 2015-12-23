@@ -1,0 +1,1118 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="My Conquest Is the Sea of Stars." />
+
+
+
+  <meta name="keywords" content="Android， 自定义View," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Syehunter" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="很多应用都会涉及到手势密码的使用，这里就以一个简单的Demo来展示如何自己设计一个手势密码的CustomView。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手势密码GestureLockView详解">
+<meta property="og:url" content="http://z.sye.space/2015/10/14/GestureLockView/index.html">
+<meta property="og:site_name" content="Syehunter">
+<meta property="og:description" content="很多应用都会涉及到手势密码的使用，这里就以一个简单的Demo来展示如何自己设计一个手势密码的CustomView。">
+<meta property="og:image" content="http://7xn4z4.com1.z0.glb.clouddn.com/GestureLockViewDemo.gif">
+<meta property="og:image" content="http://7xn4z4.com1.z0.glb.clouddn.com/gesturelock.jpg">
+<meta property="og:updated_time" content="2015-10-14T10:07:31.730Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="手势密码GestureLockView详解">
+<meta name="twitter:description" content="很多应用都会涉及到手势密码的使用，这里就以一个简单的Demo来展示如何自己设计一个手势密码的CustomView。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: '',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 手势密码GestureLockView详解 | Syehunter </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?539acdefdd0f206f531f52a400064a9d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Syehunter</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="#" class="st-search-show-outputs">
+            <i class="menu-item-icon icon-next-search"></i> <br />
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'chQjF3efA2ty1TUsREjN','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              手势密码GestureLockView详解
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-14T16:41:34+08:00" content="2015-10-14">
+            2015-10-14
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Android/" itemprop="url" rel="index">
+                  <span itemprop="name">Android</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/14/GestureLockView/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/14/GestureLockView/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p><strong>原创博客，转载请注明出处： <a href="http://z.sye.space/2015/10/14/GestureLockView/">http://z.sye.space/2015/10/14/GestureLockView/</a></strong></p>
+<p>手势密码现在在app端的应用非常广泛，然而首先其存在一定的安全隐患，其次如何处理好使用手势密码后app的离线登录问题也是需要开发者考虑的一个因素。其实就我而言，我觉得手势密码唯一有用处的地方就是锁屏，<s>然而最近叛逃到iphone阵营以后再也没用过这东西，一划就开了多方便…</s>。。</p>
+<p>似乎话题有点扯远了，即使我对这个手势密码的用途嗤之以鼻，但是作为一个开发如果要求了实现该功能还是要能做的出来的。下面就一点一点来实现这个<s>没什么鸟用的</s>手势密码。</p>
+<p>效果图(两个Activity切换时有点卡顿，模拟器的问题不要在意~~)：<br><img src="http://7xn4z4.com1.z0.glb.clouddn.com/GestureLockViewDemo.gif" alt=""></p>
+<p>首先我们来看一下手势密码的布局：<br><br><img src="http://7xn4z4.com1.z0.glb.clouddn.com/gesturelock.jpg" alt=""></p>
+<p>来分析一下这个View，上面的文字图案之类的不管，首先你需要呈现的是9个点，那么我们就先定义一个点的类<code>Point.class</code>：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Point {
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> STATE_NORMAL = <span class="number">0</span>;
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> STATE_PRESS = <span class="number">1</span>;
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> STATE_ERROR = <span class="number">2</span>;
+
+    <span class="keyword">float</span> x;
+    <span class="keyword">float</span> y;
+    <span class="keyword">int</span> state = STATE_NORMAL;
+
+    <span class="function"><span class="keyword">public</span> <span class="title">Point</span><span class="params">(<span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>{
+        <span class="keyword">this</span>.x = x;
+        <span class="keyword">this</span>.y = y;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">distance</span><span class="params">(Point a)</span> </span>{
+        <span class="keyword">float</span> distance = (<span class="keyword">float</span>) Math.<span class="built_in">sqrt</span>((x - a.x) * (x - a.x) + (y - a.y) * (y - a.y));
+        <span class="keyword">return</span> distance;
+    }
+}
+</code></pre><p>这段代码比较容易理解了，在这个类中我定义了点的圆心横纵坐标x和y，定义了三种状态，分别为<code>Normal(正常显示)</code>、<code>Press(手指划过)</code>、<code>Error(绘制错误)</code>，同时提供了一个计算任意点到圆心距离的方法<code>distance()</code>。</p>
+<p>OK，点定义完了，接下来我们应该是要把这几个图案画上去了~这里我们通过<code>canvas.drawBitmap(Bitmap bitmap, float left, float top, Paint paint)</code>这个方法，bitmap很容易，我事先获得三种状态的位图，然后再根据当前的状态来判断画哪种状态对应的bitmap就可以了。那么left和top我们如何得到呢？</p>
+<p>需要提前明确的是，我们的三种状态对应的bitmap应该是同样尺寸的，这样在整个展示的时候才不会显得突兀<s>一会看demo你们就可以感受到稍微不一样是多么违和，但是我不是美工切图不是很标准就不要吐槽了…</s>，我们获得了bitmapPointNormal,bitmapPointPress,bitmapPointError,再去计算这个位图的半径</p>
+<pre><code><span class="keyword">bitmapR </span>= <span class="keyword">bitmapPointError.getHeight() </span>/ <span class="number">2</span><span class="comment">;</span>
+</code></pre><p>得到半径之后我们还需要计算相邻点之间的距离，我们可以在<code>onMeasure()</code>方法中得到这个View的宽高，这里就不累述了，那么点的间距</p>
+<pre><code><span class="keyword">int</span> spaceX = (width - bitmapR * <span class="number">6</span>) / <span class="number">2</span>;
+<span class="keyword">int</span> spaceY = (height - bitmapR * <span class="number">6</span>) / <span class="number">2</span>;
+</code></pre><p>间距知道了后，我们开始初始化这9个点：</p>
+<pre><code>points[<span class="link_label">0</span>][<span class="link_reference">0</span>] = new Point(bitmapR, bitmapR);
+points[<span class="link_label">0</span>][<span class="link_reference">1</span>] = new Point(bitmapR * 3 + spaceX, bitmapR);
+points[<span class="link_label">0</span>][<span class="link_reference">2</span>] = new Point(bitmapR <span class="bullet">* 5 + spaceX *</span> 2, bitmapR);
+
+points[<span class="link_label">1</span>][<span class="link_reference">0</span>] = new Point(bitmapR, bitmapR * 3 + spaceY);
+points[<span class="link_label">1</span>][<span class="link_reference">1</span>] = new Point(bitmapR <span class="bullet">* 3 + spaceX, bitmapR *</span> 3 + spaceY);
+points[<span class="link_label">1</span>][<span class="link_reference">2</span>] = new Point(bitmapR <span class="bullet">* 5 + spaceX *</span> 2, bitmapR * 3 + spaceY);
+
+points[<span class="link_label">2</span>][<span class="link_reference">0</span>] = new Point(bitmapR, bitmapR <span class="bullet">* 5 + spaceY *</span> 2);
+points[<span class="link_label">2</span>][<span class="link_reference">1</span>] = new Point(bitmapR <span class="bullet">* 3 + spaceX, bitmapR *</span> 5 + spaceY * 2);
+points[<span class="link_label">2</span>][<span class="link_reference">2</span>] = new Point(bitmapR <span class="bullet">* 5 + spaceX *</span> 2, bitmapR <span class="bullet">* 5 + spaceY *</span> 2);
+</code></pre><p>这里需要注意的是初始化点的时候我们是以点的圆心为基准进行初始化的，所以对应的点的横纵坐标要加上n个bitmapR，n根据点的位置取不同的值。</p>
+<p>接下来就开始画这些点了：</p>
+<pre><code><span class="label">private</span> void drawPoints(Canvas canvas) {
+    <span class="keyword">Bitmap </span><span class="keyword">bitmap;
+</span>    for(int i = <span class="number">0</span><span class="comment">; i &lt; points.length; i++){</span>
+        for(int j = <span class="number">0</span><span class="comment">; j &lt; points[i].length; j++){</span>
+            //根据不同的状态绘制不同的点
+            <span class="preprocessor">if</span>(points[i][j].state == Point.STATE_NORMAL){
+                <span class="keyword">bitmap </span>= <span class="keyword">bitmapPointNormal;
+</span>            } <span class="preprocessor">else</span> <span class="preprocessor">if</span>(points[i][j].state == Point.STATE_PRESS){
+                <span class="keyword">bitmap </span>= <span class="keyword">bitmapPointPress;
+</span>            } <span class="preprocessor">else</span> {
+                <span class="keyword">bitmap </span>= <span class="keyword">bitmapPointError;
+</span>            }
+
+            canvas.drawBitmap(<span class="keyword">bitmap, </span>points[i][j].x - <span class="keyword">bitmapR, </span>points[i][j].y - <span class="keyword">bitmapR, </span>paint)<span class="comment">;</span>
+        }
+    }
+
+}
+</code></pre><p>在drawBitmap的时候别忘了把刚刚加上去的bitmapR去掉哦~~因为我们画位图是从左上角开始的，如果不减掉的话就会变成从圆心开始画，你们可以自行感受下。</p>
+<p>点画完了，要开始画线了。但是这个线，应该只在你的手指触摸屏幕且开始移动时才绘制，所以我这里定义了一个boolean变量isDraw来判断是否已经开始执行画线操作，初始值为false。同时</p>
+<pre><code>ArrayList<span class="tag">&lt;<span class="title">Point</span>&gt;</span> pointList = new ArrayList<span class="tag">&lt;&gt;</span>();
+</code></pre><p>用pointList来记录我们在绘制时经过的点。</p>
+<pre><code><span class="keyword">if</span>(pointList.<span class="built_in">size</span>() &gt; <span class="number">0</span>){
+    Point pointStart = pointList.<span class="built_in">get</span>(<span class="number">0</span>);
+    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; pointList.<span class="built_in">size</span>(); i++){
+        Point pointEnd = pointList.<span class="built_in">get</span>(i);
+        drawLine(canvas, pointStart, pointEnd);
+        pointStart = pointEnd;
+    }
+    <span class="keyword">if</span>(isDraw){
+        drawLine(canvas, pointStart, <span class="keyword">new</span> Point(<span class="variable">mouseX</span>, <span class="variable">mouseY</span>));
+    }
+}
+</code></pre><p>drawLine()方法：</p>
+<pre><code>private void drawLine(Canvas canvas, Point pointStart, Point pointEnd) {
+    if(pointStart.<span class="keyword">state</span> == Point.STATE_PRESS || pointStart.<span class="keyword">state</span> == Point.STATE_ERROR)
+        //如果当前状态为按下或错误时，画点之间的连线
+        canvas.drawLine(pointStart.x, pointStart.y, pointEnd.x, pointEnd.y, linePaint);
+}
+</code></pre><p>画一条从起点圆圆心到终点圆圆心的连线，不难吧？别忘了在画完一条连线后将新的起点设置为上一次连线的终点!!!</p>
+<p>刚刚说到只有isDraw为true的时候我们才会开始绘制连线，那么isDraw的取值我们就需要在<code>onTouchEvent()</code>中做处理了。先把代码发上来：</p>
+<pre><code>@Override
+<span class="keyword">public</span> <span class="built_in">boolean</span> onTouchEvent(MotionEvent event) {
+    <span class="variable">mouseX</span> = event.getX();
+    <span class="variable">mouseY</span> = event.getY();
+    <span class="built_in">int</span>[] ij;
+    <span class="built_in">int</span> i, j;
+    <span class="keyword">switch</span> (event.getAction()){
+        <span class="keyword">case</span> MotionEvent.ACTION_DOWN:
+            resetPoints();
+            ij = getSelectPoint();
+            <span class="keyword">if</span>(<span class="keyword">null</span> != ij){
+                isDraw = <span class="keyword">true</span>;
+                i = ij[<span class="number">0</span>];
+                j = ij[<span class="number">1</span>];
+                points[i][j].state = Point.STATE_PRESS;
+                pointList.<span class="built_in">add</span>(points[i][j]);
+                passList.<span class="built_in">add</span>(i * <span class="number">3</span> + j);
+            }
+            <span class="keyword">break</span>;
+        <span class="keyword">case</span> MotionEvent.ACTION_MOVE:
+            <span class="keyword">if</span>(isDraw){
+                ij = getSelectPoint();
+                <span class="keyword">if</span>(<span class="keyword">null</span> != ij){
+                    i = ij[<span class="number">0</span>];
+                    j = ij[<span class="number">1</span>];
+                    <span class="keyword">if</span>(!pointList.contains(points[i][j])){
+                        <span class="comment">//不允许重复画同一个点</span>
+                        points[i][j].state = Point.STATE_PRESS;
+                        pointList.<span class="built_in">add</span>(points[i][j]);
+                        passList.<span class="built_in">add</span>(i * <span class="number">3</span> + j);
+                    }
+                }
+            }
+            <span class="keyword">break</span>;
+        <span class="keyword">case</span> MotionEvent.ACTION_UP:
+            <span class="built_in">boolean</span> valid = <span class="keyword">false</span>;
+            <span class="keyword">if</span>(<span class="keyword">null</span> != listener &amp;&amp; isDraw){
+                <span class="comment">//回调接口，判断此次绘制是否成功</span>
+                valid = listener.OnDrawFinished(passList);
+            }
+            <span class="keyword">if</span>(!valid){
+                <span class="comment">//如果不成功，将所有已连线的点的状态置为Error</span>
+                <span class="keyword">for</span>(Point <span class="built_in">point</span> : pointList){
+                    <span class="built_in">point</span>.state = Point.STATE_ERROR;
+                }
+            }
+            isDraw = <span class="keyword">false</span>;
+            <span class="keyword">break</span>;
+    }
+    postInvalidate();
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+</code></pre><p>这里我先获得了手指按下的坐标mouseX、mouseY，当手指按下时会先执行resetPoints()操作，将所有点的状态都置为<code>STATE_NORMAL</code>，同时清空pointList和passList(这个passList实际上就是一个整数的集合，用它来记录和校对我们设置过的手势密码，看下代码其实不难理解是如何记录的),然后判断当前手指按下的坐标是否属于某一个点的范围内，如果属于就返回这个点，否则返回null。获得按下坐标属于的点后，我们即认为绘制开始，将当前的点分别添加到pointList和passList中，设置该点的状态为STATE_PRESS。</p>
+<p>手指移动时，同样获得经过的点，重复执行上面的操作，不多说。</p>
+<p>手指抬起时，这里定义了一个boolean变量valid，初始值为false。这个变量用于接收用户的回调，根据用户的定义来判断这次绘制是成功的还是失败的。如果是失败的，将所有的点的状态置为Error，如果成功则保留当前状态。最后在手指抬起时认为绘制完成，将isDraw重置。</p>
+<p>整个<code>onTouchEvent()</code>中都在不停重复执行<code>postInvalidate()</code>操作，保证绘制的连贯性。</p>
+<p>这样我们的绘制就完成了，关于绘制出来的图案(即passList)如何保存请自行思考，其实非常简单啦…看源代码也可以~</p>
+<p>这里贴上整个GestureLockView的代码：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span>  GestureLockView extends View {
+
+    <span class="keyword">private</span> Paint paint;
+    <span class="keyword">private</span> Paint linePaint;
+    <span class="keyword">private</span> Bitmap bitmapPointError;
+    <span class="keyword">private</span> Bitmap bitmapPointNormal;
+    <span class="keyword">private</span> Bitmap bitmapPointPress;
+
+    <span class="keyword">private</span> <span class="keyword">int</span> bitmapR;
+
+    <span class="keyword">private</span> boolean pointInited = <span class="literal">false</span>;
+    <span class="keyword">private</span> <span class="keyword">int</span> width;
+    <span class="keyword">private</span> <span class="keyword">int</span> height;
+    <span class="keyword">private</span> Point[][] points;
+    <span class="keyword">private</span> ArrayList&lt;Point&gt; pointList;
+    <span class="keyword">private</span> ArrayList&lt;Integer&gt; passList;
+
+    <span class="comment">/**
+     * 用于标识当前是否正在绘制
+     */</span>
+    <span class="keyword">private</span> boolean isDraw = <span class="literal">false</span>;
+
+    <span class="keyword">private</span> <span class="keyword">float</span> mouseX, mouseY;
+
+    <span class="keyword">private</span> OnDrawFinishedListener listener;
+
+    <span class="function"><span class="keyword">public</span> <span class="title">GestureLockView</span><span class="params">(Context context, AttributeSet attrs)</span> </span>{
+        super(context, attrs);
+        init(context, attrs);
+    }
+
+    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(Context context, AttributeSet attrs)</span> </span>{
+        setBackgroundColor(Color.TRANSPARENT);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GestureLockView);
+        <span class="keyword">int</span> normal = a.getResourceId(R.styleable.GestureLockView_bitmapNormal, R.drawable.normal);
+        <span class="keyword">int</span> select = a.getResourceId(R.styleable.GestureLockView_bitmapSelect, R.drawable.select);
+        <span class="keyword">int</span> error = a.getResourceId(R.styleable.GestureLockView_bitmapError, R.drawable.error);
+        <span class="keyword">int</span> lineColor = a.getColor(R.styleable.GestureLockView_lineColor, <span class="number">0xFF773355</span>);
+        <span class="keyword">float</span> strokeWidth = a.getDimension(R.styleable.GestureLockView_strokeWidth, <span class="number">8</span>);
+        a.recycle();
+
+        paint = <span class="keyword">new</span> Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+
+        linePaint = <span class="keyword">new</span> Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+        linePaint.setColor(lineColor);
+        linePaint.setStrokeWidth(strokeWidth);
+        <span class="comment">//设置画线时的PorterDuffMode,这里的效果是让线画出来时位于点的图层的下面(即相交处点覆盖线)</span>
+        linePaint.setXfermode(<span class="keyword">new</span> PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
+
+        <span class="comment">//获得三种状态对应的位图</span>
+        bitmapPointError = BitmapFactory.decodeResource(getResources(),
+                error);
+        bitmapPointNormal = BitmapFactory.decodeResource(getResources(),
+                normal);
+        bitmapPointPress = BitmapFactory.decodeResource(getResources(),
+                select);
+        <span class="comment">//获得位图半径</span>
+        bitmapR = bitmapPointError.getHeight() / <span class="number">2</span>;
+        <span class="comment">//初始化9个点</span>
+        points = <span class="keyword">new</span> Point[<span class="number">3</span>][<span class="number">3</span>];
+
+        pointList = <span class="keyword">new</span> ArrayList&lt;&gt;();
+        passList = <span class="keyword">new</span> ArrayList&lt;&gt;();
+    }
+
+    @<span class="function">Override
+    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>{
+        <span class="keyword">int</span> widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        <span class="keyword">int</span> measureWidth = MeasureSpec.getSize(widthMeasureSpec);
+
+        <span class="keyword">int</span> heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        <span class="keyword">int</span> measureHeight = MeasureSpec.getSize(heightMeasureSpec);
+
+
+        width = measureWidth - getPaddingLeft() - getPaddingRight();
+        height = measureHeight - getPaddingTop() - getPaddingBottom();
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @<span class="function">Override
+    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>{
+        super.onDraw(canvas);
+        <span class="keyword">if</span>(!pointInited){
+            <span class="comment">//如果未对bitmap的坐标进行过初始化，则初始化</span>
+            initPoints();
+        }
+
+        canvas.drawBitmap(drawView(), <span class="number">0</span>, <span class="number">0</span>, null);
+    }
+
+    <span class="function"><span class="keyword">private</span> Bitmap <span class="title">drawView</span><span class="params">()</span> </span>{
+        Bitmap target = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = <span class="keyword">new</span> Canvas(target);
+
+        drawPoints(canvas);
+
+        <span class="keyword">if</span>(pointList.size() &gt; <span class="number">0</span>){
+            Point pointStart = pointList.get(<span class="number">0</span>);
+            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; pointList.size(); i++){
+                Point pointEnd = pointList.get(i);
+                drawLine(canvas, pointStart, pointEnd);
+                pointStart = pointEnd;
+            }
+            <span class="keyword">if</span>(isDraw){
+                drawLine(canvas, pointStart, <span class="keyword">new</span> Point(mouseX, mouseY));
+            }
+        }
+
+        <span class="keyword">return</span> target;
+    }
+
+    <span class="comment">/**
+     * 画相邻点直接的连线
+     * @param canvas
+     * @param pointStart 起始点
+     * @param pointEnd 终止点
+     */</span>
+    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">drawLine</span><span class="params">(Canvas canvas, Point pointStart, Point pointEnd)</span> </span>{
+        <span class="keyword">if</span>(pointStart.state == Point.STATE_PRESS || pointStart.state == Point.STATE_ERROR)
+            <span class="comment">//如果当前状态为按下或错误时，画点之间的连线</span>
+            canvas.drawLine(pointStart.x, pointStart.y, pointEnd.x, pointEnd.y, linePaint);
+    }
+
+    <span class="comment">/**
+     * 画点
+     * @param canvas
+     */</span>
+    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">drawPoints</span><span class="params">(Canvas canvas)</span> </span>{
+        Bitmap bitmap;
+        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; points.length; i++){
+            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; points[i].length; j++){
+                <span class="comment">//根据不同的状态绘制不同的点</span>
+                <span class="keyword">if</span>(points[i][j].state == Point.STATE_NORMAL){
+                    bitmap = bitmapPointNormal;
+                } <span class="keyword">else</span> <span class="keyword">if</span>(points[i][j].state == Point.STATE_PRESS){
+                    bitmap = bitmapPointPress;
+                } <span class="keyword">else</span> {
+                    bitmap = bitmapPointError;
+                }
+
+                canvas.drawBitmap(bitmap, points[i][j].x - bitmapR, points[i][j].y - bitmapR, paint);
+            }
+        }
+
+    }
+
+    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initPoints</span><span class="params">()</span> </span>{
+        <span class="comment">//计算x方向和y方向相邻bitmap之间的间距</span>
+        <span class="keyword">int</span> spaceX = (width - bitmapR * <span class="number">6</span>) / <span class="number">2</span>;
+        <span class="keyword">int</span> spaceY = (height - bitmapR * <span class="number">6</span>) / <span class="number">2</span>;
+
+        points[<span class="number">0</span>][<span class="number">0</span>] = <span class="keyword">new</span> Point(bitmapR, bitmapR);
+        points[<span class="number">0</span>][<span class="number">1</span>] = <span class="keyword">new</span> Point(bitmapR * <span class="number">3</span> + spaceX, bitmapR);
+        points[<span class="number">0</span>][<span class="number">2</span>] = <span class="keyword">new</span> Point(bitmapR * <span class="number">5</span> + spaceX * <span class="number">2</span>, bitmapR);
+
+        points[<span class="number">1</span>][<span class="number">0</span>] = <span class="keyword">new</span> Point(bitmapR, bitmapR * <span class="number">3</span> + spaceY);
+        points[<span class="number">1</span>][<span class="number">1</span>] = <span class="keyword">new</span> Point(bitmapR * <span class="number">3</span> + spaceX, bitmapR * <span class="number">3</span> + spaceY);
+        points[<span class="number">1</span>][<span class="number">2</span>] = <span class="keyword">new</span> Point(bitmapR * <span class="number">5</span> + spaceX * <span class="number">2</span>, bitmapR * <span class="number">3</span> + spaceY);
+
+        points[<span class="number">2</span>][<span class="number">0</span>] = <span class="keyword">new</span> Point(bitmapR, bitmapR * <span class="number">5</span> + spaceY * <span class="number">2</span>);
+        points[<span class="number">2</span>][<span class="number">1</span>] = <span class="keyword">new</span> Point(bitmapR * <span class="number">3</span> + spaceX, bitmapR * <span class="number">5</span> + spaceY * <span class="number">2</span>);
+        points[<span class="number">2</span>][<span class="number">2</span>] = <span class="keyword">new</span> Point(bitmapR * <span class="number">5</span> + spaceX * <span class="number">2</span>, bitmapR * <span class="number">5</span> + spaceY * <span class="number">2</span>);
+
+        pointInited = <span class="literal">true</span>;
+    }
+
+    @<span class="function">Override
+    <span class="keyword">public</span> boolean <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>{
+        mouseX = event.getX();
+        mouseY = event.getY();
+        <span class="keyword">int</span>[] ij;
+        <span class="keyword">int</span> i, j;
+        <span class="keyword">switch</span> (event.getAction()){
+            <span class="keyword">case</span> MotionEvent.ACTION_DOWN:
+                resetPoints();
+                ij = getSelectPoint();
+                <span class="keyword">if</span>(null != ij){
+                    isDraw = <span class="literal">true</span>;
+                    i = ij[<span class="number">0</span>];
+                    j = ij[<span class="number">1</span>];
+                    points[i][j].state = Point.STATE_PRESS;
+                    pointList.add(points[i][j]);
+                    passList.add(i * <span class="number">3</span> + j);
+                }
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> MotionEvent.ACTION_MOVE:
+                <span class="keyword">if</span>(isDraw){
+                    ij = getSelectPoint();
+                    <span class="keyword">if</span>(null != ij){
+                        i = ij[<span class="number">0</span>];
+                        j = ij[<span class="number">1</span>];
+                        <span class="keyword">if</span>(!pointList.contains(points[i][j])){
+                            <span class="comment">//不允许重复画同一个点</span>
+                            points[i][j].state = Point.STATE_PRESS;
+                            pointList.add(points[i][j]);
+                            passList.add(i * <span class="number">3</span> + j);
+                        }
+                    }
+                }
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> MotionEvent.ACTION_UP:
+                boolean valid = <span class="literal">false</span>;
+                <span class="keyword">if</span>(null != listener &amp;&amp; isDraw){
+                    <span class="comment">//回调接口，判断此次绘制是否成功</span>
+                    valid = listener.OnDrawFinished(passList);
+                }
+                <span class="keyword">if</span>(!valid){
+                    <span class="comment">//如果不成功，将所有已连线的点的状态置为Error</span>
+                    <span class="keyword">for</span>(Point point : pointList){
+                        point.state = Point.STATE_ERROR;
+                    }
+                }
+                isDraw = <span class="literal">false</span>;
+                <span class="keyword">break</span>;
+        }
+        postInvalidate();
+        <span class="keyword">return</span> <span class="literal">true</span>;
+    }
+
+    <span class="comment">/**
+     * 判断当前被选中的是哪个点
+     * @return
+     */</span>
+    <span class="keyword">private</span> <span class="keyword">int</span>[] getSelectPoint() {
+        Point pointMouse = <span class="keyword">new</span> Point(mouseX, mouseY);
+        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; points.length; i++){
+            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; points[i].length; j++){
+                <span class="comment">//遍历9个点，如果手指按下的位置距离点的圆心小于半径长度时，认为当前点被选中</span>
+                <span class="keyword">float</span> distance = points[i][j].distance(pointMouse);
+                <span class="keyword">if</span>(distance &lt; bitmapR){
+                    <span class="keyword">int</span>[] result = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];
+                    result[<span class="number">0</span>] = i;
+                    result[<span class="number">1</span>] = j;
+                    <span class="keyword">return</span> result;
+                }
+            }
+        }
+        <span class="keyword">return</span> null;
+    }
+
+    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">resetPoints</span><span class="params">()</span> </span>{
+        pointList.clear();
+        passList.clear();
+        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; points.length; i++){
+            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; points[i].length; j++){
+                points[i][j].state = Point.STATE_NORMAL;
+            }
+        }
+        postInvalidate();
+    }
+
+    <span class="keyword">public</span> interface OnDrawFinishedListener {
+        <span class="function">boolean <span class="title">OnDrawFinished</span><span class="params">(List&lt;Integer&gt; passList)</span></span>;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOnDrawFinishedListener</span><span class="params">(OnDrawFinishedListener listener)</span> </span>{
+        <span class="keyword">this</span>.listener = listener;
+    }
+}
+</code></pre><p>该自定义View同时提供了如下几个自定义属性，怎么用就不需要我说了吧~</p>
+<pre><code><span class="tag">&lt;<span class="title">declare-styleable</span> <span class="attribute">name</span>=<span class="value">"GestureLockView"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">attr</span> <span class="attribute">name</span>=<span class="value">"bitmapError"</span> <span class="attribute">format</span>=<span class="value">"reference"</span>/&gt;</span>
+    <span class="tag">&lt;<span class="title">attr</span> <span class="attribute">name</span>=<span class="value">"bitmapSelect"</span> <span class="attribute">format</span>=<span class="value">"reference"</span>/&gt;</span>
+    <span class="tag">&lt;<span class="title">attr</span> <span class="attribute">name</span>=<span class="value">"bitmapNormal"</span> <span class="attribute">format</span>=<span class="value">"reference"</span>/&gt;</span>
+    <span class="tag">&lt;<span class="title">attr</span> <span class="attribute">name</span>=<span class="value">"lineColor"</span> <span class="attribute">format</span>=<span class="value">"color"</span>/&gt;</span>
+    <span class="tag">&lt;<span class="title">attr</span> <span class="attribute">name</span>=<span class="value">"strokeWidth"</span> <span class="attribute">format</span>=<span class="value">"dimension"</span>/&gt;</span>
+<span class="tag">&lt;/<span class="title">declare-styleable</span>&gt;</span>
+</code></pre><p><a href="https://github.com/Syehunter/GestureLockView" target="_blank" rel="external">项目github地址</a></p>
+<p>P.S. 随项目附上两张精美壁纸，望程序猿们查收~~</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android，-自定义View/" rel="tag">#Android， 自定义View</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/20/ChartView/" rel="prev">自定义图表ChartView</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/29/HeaderToast/" rel="next">仿Android5.0 Heads-Up风格的Toast提示</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/10/14/GestureLockView/"
+                   data-title="手势密码GestureLockView详解" data-url="http://z.sye.space/2015/10/14/GestureLockView/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Syehunter" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Syehunter</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">My Conquest Is the Sea of Stars.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Syehunter" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2675266877?source=blog" target="_blank">Weibo</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Syehunter</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"syehunter"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

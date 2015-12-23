@@ -1,0 +1,945 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="My Conquest Is the Sea of Stars." />
+
+
+
+  <meta name="keywords" content="Android,自定义Toast," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Syehunter" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="仿Android5.0 Heads-Up风格的自定义Toast，支持手指上滑移除Toast。根据需要，可通过调用ToastUtils.show()或ToastUtils.showWithCustomIcon()方法来展示该自定义View。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="仿Android5.0 Heads-Up风格的Toast提示">
+<meta property="og:url" content="http://z.sye.space/2015/09/29/HeaderToast/index.html">
+<meta property="og:site_name" content="Syehunter">
+<meta property="og:description" content="仿Android5.0 Heads-Up风格的自定义Toast，支持手指上滑移除Toast。根据需要，可通过调用ToastUtils.show()或ToastUtils.showWithCustomIcon()方法来展示该自定义View。">
+<meta property="og:image" content="http://7xn4z4.com1.z0.glb.clouddn.com/HeaderToastDemo.gif">
+<meta property="og:updated_time" content="2015-09-30T03:26:11.391Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="仿Android5.0 Heads-Up风格的Toast提示">
+<meta name="twitter:description" content="仿Android5.0 Heads-Up风格的自定义Toast，支持手指上滑移除Toast。根据需要，可通过调用ToastUtils.show()或ToastUtils.showWithCustomIcon()方法来展示该自定义View。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: '',
+    sidebar: 'always'
+  };
+</script>
+
+  <title> 仿Android5.0 Heads-Up风格的Toast提示 | Syehunter </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?539acdefdd0f206f531f52a400064a9d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Syehunter</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+        <li class="menu-item menu-item-search">
+          <a href="#" class="st-search-show-outputs">
+            <i class="menu-item-icon icon-next-search"></i> <br />
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'chQjF3efA2ty1TUsREjN','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              仿Android5.0 Heads-Up风格的Toast提示
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-09-29T17:28:05+08:00" content="2015-09-29">
+            2015-09-29
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Android/" itemprop="url" rel="index">
+                  <span itemprop="name">Android</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/09/29/HeaderToast/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/29/HeaderToast/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p><strong>原创博客，转载请注明出处： <a href="http://z.sye.space/2015/09/29/HeaderToast/">http://z.sye.space/2015/09/29/HeaderToast/</a></strong></p>
+<p>最近公司的产品想实现一个和Android5.0 Heads-Up风格类似的Toast提示，然而Heads-Up只能使用在5.0及以上的系统中，虽然有<a href="https://github.com/zzz40500/HeadsUp" target="_blank" rel="external">Heads-Up</a>这个向下兼容的开源框架，但是它实际上是一个Notifaction并不是我们常用的Toast，于是就写了个自定义的HeaderToast来作为实现。</p>
+<p>先上个运行效果图(P.S. 为了演示效果我把这个Toast的持续时间设置为了5s，上传的library中已经改为为2s)：</p>
+<p><img src="http://7xn4z4.com1.z0.glb.clouddn.com/HeaderToastDemo.gif" alt=""></p>
+<p>主要实现的方式就是通过调用WindowManager来展示一个自定义的Toast，并对其添加触摸事件，当判断到手指上滑时将自定义的Toast dismiss掉。</p>
+<p>代码中注释写的比较全，就不多说了。</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HeaderToast</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnTouchListener</span> </span>{
+
+    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> CLOSE = <span class="number">0</span>;
+
+    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> ANIM_DURATION = <span class="number">600</span>;
+    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> SHOW_DURATION = <span class="number">2000</span>;
+
+    <span class="keyword">private</span> <span class="keyword">final</span> Context mContext;
+    <span class="keyword">private</span> View mHeaderToastView;
+    <span class="keyword">private</span> WindowManager wm;
+    <span class="keyword">private</span> LinearLayout linearLayout;
+    <span class="keyword">private</span> <span class="keyword">float</span> downY;
+    <span class="keyword">private</span> ImageView iv_header_toast;
+    <span class="keyword">private</span> TextView tv_header_toast;
+
+    <span class="function"><span class="keyword">public</span> <span class="title">HeaderToast</span><span class="params">(Context context)</span></span>{
+        <span class="comment">//使用applicationContext保证Activity跳转时Toast不会消失</span>
+        <span class="keyword">this</span>.mContext = context.getApplicationContext();
+    }
+
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(String toast)</span></span>{
+        showHeaderToast(toast);
+    }
+
+    <span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="function"><span class="keyword">void</span> <span class="title">showHeaderToast</span><span class="params">(String toast)</span> </span>{
+
+        initHeaderToastView();
+
+        setText(toast);
+
+        setHeaderViewInAnim();
+
+        <span class="comment">//2s后自动关闭</span>
+        mHeaderToastHandler.sendEmptyMessageDelayed(CLOSE, SHOW_DURATION);
+    }
+
+    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">showWithCustomIcon</span><span class="params">(<span class="keyword">int</span> icon, String toast)</span></span>{
+        showHeaderToastWithCustomIcon(icon, toast);
+    }
+
+    <span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="function"><span class="keyword">void</span> <span class="title">showHeaderToastWithCustomIcon</span><span class="params">(<span class="keyword">int</span> icon, String toast)</span> </span>{
+        initHeaderToastView();
+
+        setIcon(icon);
+
+        setText(toast);
+
+        setHeaderViewInAnim();
+
+        <span class="comment">//2s后自动关闭</span>
+        mHeaderToastHandler.sendEmptyMessageDelayed(CLOSE, SHOW_DURATION);
+    }
+
+    <span class="comment">/**
+     * 为mHeaderToastView添加进入动画
+     */</span>
+    <span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">setHeaderViewInAnim</span><span class="params">()</span> </span>{
+        ObjectAnimator a = ObjectAnimator.ofFloat(mHeaderToastView, <span class="string">"translationY"</span>, -<span class="number">700</span>, <span class="number">0</span>);
+        a.setDuration(ANIM_DURATION);
+        a.start();
+    }
+
+    <span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">setText</span><span class="params">(String toast)</span> </span>{
+        tv_header_toast.setText(toast);
+    }
+
+    <span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">setIcon</span><span class="params">(<span class="keyword">int</span> icon)</span> </span>{
+        iv_header_toast.setBackgroundResource(icon);
+    }
+
+    <span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">initHeaderToastView</span><span class="params">()</span> </span>{
+        wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+
+        <span class="comment">//为mHeaderToastView添加parent使其能够展示动画效果</span>
+        linearLayout = <span class="keyword">new</span> LinearLayout(mContext);
+        LinearLayout.LayoutParams llParams = <span class="keyword">new</span> LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        linearLayout.setLayoutParams(llParams);
+
+        mHeaderToastView = View.inflate(mContext, R.layout.header_toast, <span class="keyword">null</span>);
+        <span class="comment">//为mHeaderToastView添加滑动删除事件</span>
+        mHeaderToastView.setOnTouchListener(<span class="keyword">this</span>);
+        iv_header_toast = (ImageView) mHeaderToastView.findViewById(R.id.iv_header_toast);
+        tv_header_toast = (TextView) mHeaderToastView.findViewById(R.id.tv_header_toast);
+
+        WindowManager.LayoutParams wmParams = <span class="keyword">new</span> WindowManager.LayoutParams();
+        wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+        wmParams.gravity = Gravity.CENTER | Gravity.TOP;
+        wmParams.x = <span class="number">0</span>;
+        wmParams.y = <span class="number">0</span>;
+        wmParams.format = PixelFormat.TRANSLUCENT;
+        wmParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+        linearLayout.addView(mHeaderToastView);
+        wm.addView(linearLayout, wmParams);
+    }
+
+    <span class="keyword">public</span> Handler mHeaderToastHandler = <span class="keyword">new</span> Handler(){
+        <span class="annotation">@Override</span>
+        <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>{
+            <span class="keyword">switch</span> (msg.what){
+                <span class="keyword">case</span> CLOSE:
+                    animDismiss();
+                    <span class="keyword">break</span>;
+                <span class="keyword">default</span>:
+                    Log.e(<span class="string">"HeaderToast"</span>, <span class="string">"no selection matches"</span>);
+                    <span class="keyword">break</span>;
+            }
+        }
+    };
+
+    <span class="comment">/**
+     * HeaderToast消失动画
+     */</span>
+    <span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">animDismiss</span><span class="params">()</span> </span>{
+        <span class="keyword">if</span>(<span class="keyword">null</span> == linearLayout || <span class="keyword">null</span> == linearLayout.getParent()){
+            <span class="comment">//如果linearLayout已经被从wm中移除，直接return</span>
+            <span class="keyword">return</span>;
+        }
+
+        ObjectAnimator a = ObjectAnimator.ofFloat(mHeaderToastView, <span class="string">"translationY"</span>, <span class="number">0</span>, -<span class="number">700</span>);
+        a.setDuration(ANIM_DURATION);
+        a.start();
+
+        a.addListener(<span class="keyword">new</span> Animator.AnimatorListener() {
+
+            <span class="annotation">@Override</span>
+            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onAnimationStart</span><span class="params">(Animator animation)</span> </span>{
+
+            }
+
+            <span class="annotation">@Override</span>
+            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onAnimationEnd</span><span class="params">(Animator animation)</span> </span>{
+                dismiss();
+            }
+
+            <span class="annotation">@Override</span>
+            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onAnimationCancel</span><span class="params">(Animator animation)</span> </span>{
+
+            }
+
+            <span class="annotation">@Override</span>
+            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onAnimationRepeat</span><span class="params">(Animator animation)</span> </span>{
+
+            }
+        });
+    }
+
+    <span class="comment">/**
+     * 移除HeaderToast
+     */</span>
+    <span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">dismiss</span><span class="params">()</span> </span>{
+        <span class="keyword">if</span>(<span class="keyword">null</span> != linearLayout &amp;&amp; <span class="keyword">null</span> != linearLayout.getParent()){
+            wm.removeView(linearLayout);
+        }
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onTouch</span><span class="params">(View v, MotionEvent event)</span> </span>{
+        <span class="keyword">switch</span> (event.getAction()){
+            <span class="keyword">case</span> MotionEvent.ACTION_DOWN:
+                downY = event.getRawY();
+                <span class="keyword">break</span>;
+            <span class="keyword">case</span> MotionEvent.ACTION_MOVE:
+                <span class="keyword">float</span> currentY = event.getRawY();
+                <span class="keyword">if</span>((downY - currentY) &gt;= <span class="number">10</span>){
+                    animDismiss();
+                }
+                <span class="keyword">break</span>;
+        }
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+}
+</code></pre><p>这个类提供了两个方法，一种是可以自定义左侧图标的方法，一种是不改变图标直接只改变文字，以应对不同的需求。</p>
+<p>HeaderToast的布局文件如下：</p>
+<pre><code><span class="pi">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="tag">&lt;<span class="title">LinearLayout</span> <span class="attribute">android:id</span>=<span class="value">"@+id/rl_rootview"</span>
+              <span class="attribute">xmlns:android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span>
+              <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span>
+              <span class="attribute">android:layout_height</span>=<span class="value">"wrap_content"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">RelativeLayout</span>
+        <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span>
+        <span class="attribute">android:layout_height</span>=<span class="value">"57dp"</span>
+        <span class="attribute">android:background</span>=<span class="value">"#773355"</span>
+        <span class="attribute">android:paddingBottom</span>=<span class="value">"8dp"</span>
+        <span class="attribute">android:paddingTop</span>=<span class="value">"8dp"</span>&gt;</span>
+
+        <span class="tag">&lt;<span class="title">ImageView</span>
+            <span class="attribute">android:id</span>=<span class="value">"@+id/iv_header_toast"</span>
+            <span class="attribute">android:layout_width</span>=<span class="value">"30dp"</span>
+            <span class="attribute">android:layout_height</span>=<span class="value">"30dp"</span>
+            <span class="attribute">android:layout_centerVertical</span>=<span class="value">"true"</span>
+            <span class="attribute">android:layout_marginLeft</span>=<span class="value">"12dp"</span>
+            /&gt;</span>
+
+        <span class="tag">&lt;<span class="title">RelativeLayout</span>
+            <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span>
+            <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span>
+            <span class="attribute">android:layout_marginLeft</span>=<span class="value">"12dp"</span>
+            <span class="attribute">android:layout_marginRight</span>=<span class="value">"12dp"</span>
+            <span class="attribute">android:layout_toRightOf</span>=<span class="value">"@id/iv_header_toast"</span>&gt;</span>
+
+            <span class="tag">&lt;<span class="title">TextView</span>
+                <span class="attribute">android:id</span>=<span class="value">"@+id/tv_header_toast"</span>
+                <span class="attribute">android:layout_width</span>=<span class="value">"wrap_content"</span>
+                <span class="attribute">android:layout_height</span>=<span class="value">"wrap_content"</span>
+                <span class="attribute">android:layout_centerInParent</span>=<span class="value">"true
+                android:textColor="</span><span class="value">#FFFFFF"</span>
+                <span class="attribute">android:textSize</span>=<span class="value">"20sp"</span>/&gt;</span>
+
+        <span class="tag">&lt;/<span class="title">RelativeLayout</span>&gt;</span>
+
+    <span class="tag">&lt;/<span class="title">RelativeLayout</span>&gt;</span>
+
+
+<span class="tag">&lt;/<span class="title">LinearLayout</span>&gt;</span>
+</code></pre><p>布局文件中在最外层多套用了一个LinearLayout的原因：如果没有这个LinearLayout，HeaderToast展示时会直接拓展到屏幕底部(这个布局文件写的有点…bullshit，不要介意=。=)。</p>
+<p>调用时创建了一个ToastUtils的类，提供两个静态方法：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ToastUtils</span> </span>{
+
+    <span class="keyword">private</span> <span class="keyword">static</span> HeaderToast headerToast;
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showWithCustomIcon</span><span class="params">(<span class="keyword">final</span> Context context, <span class="keyword">final</span> <span class="keyword">int</span> icon, <span class="keyword">final</span> String toast)</span> </span>{
+        headerToast = <span class="keyword">new</span> HeaderToast(context);
+        headerToast.showWithCustomIcon(icon, toast);
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(<span class="keyword">final</span> Context context, <span class="keyword">final</span> String toast)</span> </span>{
+        headerToast = <span class="keyword">new</span> HeaderToast(context);
+        headerToast.show(toast);
+    }
+}
+</code></pre><p>最后使用起来就非常简单啦…</p>
+<pre><code><span class="tag">ToastUtils</span><span class="class">.showWithCustomIcon</span>(<span class="tag">MainActivity</span><span class="class">.this</span>, <span class="tag">R</span><span class="class">.mipmap</span><span class="class">.ic_launcher</span>, "<span class="tag">Just</span> <span class="tag">For</span> <span class="tag">Text</span>");
+</code></pre><p>最后附上<a href="https://github.com/Syehunter/HeaderToast" target="_blank" rel="external">github</a>项目地址~</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/自定义Toast/" rel="tag">#自定义Toast</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/14/GestureLockView/" rel="prev">手势密码GestureLockView详解</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/29/Hello World/" rel="next">Hello World</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/09/29/HeaderToast/"
+                   data-title="仿Android5.0 Heads-Up风格的Toast提示" data-url="http://z.sye.space/2015/09/29/HeaderToast/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Syehunter" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Syehunter</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">My Conquest Is the Sea of Stars.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Syehunter" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2675266877?source=blog" target="_blank">Weibo</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Syehunter</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"syehunter"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
