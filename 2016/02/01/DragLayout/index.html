@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="Syehunter," />
+  <meta name="keywords" content="Android,RecyclerView," />
 
 
 
@@ -41,16 +41,17 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Nothing to say but &quot;Hello!&quot;">
+<meta name="description" content="可拖拽的RecyclerView，项目内置已实现可拖拽的Adapter，亦可自行定义。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://z.sye.space/2015/09/29/Hello World/index.html">
+<meta property="og:title" content="DragLayout--可拖拽的RecyclerView(类网易新闻频道管理实现)">
+<meta property="og:url" content="http://z.sye.space/2016/02/01/DragLayout/index.html">
 <meta property="og:site_name" content="Syehunter">
-<meta property="og:description" content="Nothing to say but &quot;Hello!&quot;">
-<meta property="og:updated_time" content="2015-09-29T10:02:48.000Z">
+<meta property="og:description" content="可拖拽的RecyclerView，项目内置已实现可拖拽的Adapter，亦可自行定义。">
+<meta property="og:image" content="http://7xn4z4.com1.z0.glb.clouddn.com/DragLayout.gif">
+<meta property="og:updated_time" content="2016-02-01T07:11:01.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Nothing to say but &quot;Hello!&quot;">
+<meta name="twitter:title" content="DragLayout--可拖拽的RecyclerView(类网易新闻频道管理实现)">
+<meta name="twitter:description" content="可拖拽的RecyclerView，项目内置已实现可拖拽的Adapter，亦可自行定义。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -60,7 +61,7 @@
   };
 </script>
 
-  <title> Hello World | Syehunter </title>
+  <title> DragLayout--可拖拽的RecyclerView(类网易新闻频道管理实现) | Syehunter </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -201,7 +202,7 @@
           
           
             
-              Hello World
+              DragLayout--可拖拽的RecyclerView(类网易新闻频道管理实现)
             
           
         </h1>
@@ -210,34 +211,19 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-29T14:59:44+08:00" content="2015-09-29">
-            2015-09-29
+          <time itemprop="dateCreated" datetime="2016-02-01T09:20:38+08:00" content="2016-02-01">
+            2016-02-01
           </time>
         </span>
 
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/随笔/" itemprop="url" rel="index">
-                  <span itemprop="name">随笔</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
         
 
         
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/09/29/Hello World/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/29/Hello World/" itemprop="commentsCount"></span>
+              <a href="/2016/02/01/DragLayout/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/01/DragLayout/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -251,8 +237,148 @@
       
 
       
-        <span itemprop="articleBody"><pre><code>System.<span class="keyword">out</span>.println(<span class="string">"Hello World, Hello SyeHunter"</span>);
-</code></pre></span>
+        <span itemprop="articleBody"><p><strong>原创博客，转载请注明出处： <a href="http://z.sye.space/2016/02/01/DragLayout/">http://z.sye.space/2016/02/01/DragLayout/</a></strong></p>
+<p>之前公司的一个项目要求做一个新闻客户端，需要实现一个和网易新闻频道管理功能类似的界面。当时有用GridView去写，不过库写了一大半存在一点bug，新的需求又比较紧，就扔在一边没管了。</p>
+<p>最近突然想起来，然后在想从前用GridView去实现，然而我们现在有了功能更加强大的RecyclerView，为什么不用RecyclerView来完成这样一个功能呢？</p>
+<p>例行公事，先上效果图：</p>
+<p><img src="http://7xn4z4.com1.z0.glb.clouddn.com/DragLayout.gif" alt=""></p>
+<p>响应正常的click事件，长按模式下可进行拖动，点击item右上角的叉叉进行item的删除。删除的item会自动加到下面的一个RecyclerView中，并按照拼音顺序排序。</p>
+<p>与传统的<code>View.onDragListener</code>相比，RecyclerView提供了新的api来处理拖动事件，也就是<code>ItemTouchHelper</code>。这个类实际上是<code>ItemDecoration</code>的子类，并且可以发现它提供了一个<code>attachToRecyclerView(recyclerView)</code>的方法，接收一个RecyclerView作为参数。</p>
+<p>我们先看下<code>ItemTouchHelper</code>的构造方法：</p>
+<pre><code> /<span class="keyword">*</span><span class="keyword">*</span>
+ <span class="keyword">*</span> Creates an ItemTouchHelper that will work with the given Callback.
+ <span class="keyword">*</span>
+ <span class="keyword">*</span> You can attach ItemTouchHelper to a RecyclerView via
+ <span class="keyword">*</span> {<span class="comment">@link #attachToRecyclerView(RecyclerView)}. Upon attaching, it will add an item decoration,</span>
+ <span class="keyword">*</span> an onItemTouchListener and a Child attach / detach listener to the RecyclerView.
+ <span class="keyword">*</span>
+ <span class="keyword">*</span> <span class="comment">@param callback The Callback which controls the behavior of this touch helper.</span>
+ <span class="keyword">*</span>/
+public ItemTouchHelper(Callback callback) {
+    mCallback = callback;
+}
+</code></pre><p>从构造方法中可以看出创建<code>ItemTouchHelper</code>对象需要一个<code>ItemTouchHelpder.Callback</code>作为参数，从注释中解释了该Callback的作用：控制<code>ItemTouchHelper</code>的行为。也就是说这个<code>ItemTouchHelper.Callback</code>是控制item动作的主要部分。</p>
+<p><code>ItemTouchHelper.Callback</code>是一个公有的抽象静态类，于是定义一个<code>DragItemTouchHelperCallback</code>继承这个类，有三个方法需要我们自己去实现：</p>
+<pre><code><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">getMovementFlags</span><span class="params">(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)</span> </span>{
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+
+<span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onMove</span><span class="params">(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder <span class="keyword">target</span>)</span> </span>{
+        <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+    mOnItemChangeListener.onItemMove(source.getAdapterPosition(), <span class="keyword">target</span>.getAdapterPosition());
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+
+<span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onSwiped</span><span class="params">(RecyclerView.ViewHolder viewHolder, <span class="keyword">int</span> direction)</span> </span>{
+
+}
+</code></pre><p>实际上就是让使用者自己去完成对Move以及Swip时间的监听。<code>getMovementFlags()</code>这个方法比较简单，就是用来指定item支持的拖动或滑动方向，一般使用</p>
+<ul>
+<li><code>ItemTouchHelper.UP</code></li>
+<li><code>ItemTouchHelper.DOWN</code></li>
+<li><code>ItemTouchHelper.START</code></li>
+<li><code>ItemTouchHelper.END</code></li>
+<li><code>ItemTouchHelper.LEFT</code></li>
+<li><code>ItemTouchHelper.RIGHT</code></li>
+</ul>
+<p>这几个参数来定义支持的方向，具体想要支持哪种自行选择，之后调用makeMovementFlags(dragFlags, swipFlags)来完成设置(注： dragFlags为拖动，swipFlags为滑动)。</p>
+<p><code>onMove()</code>和<code>onSwiped()</code>方法就需要我们自定去定义希望在触发移动和滑动时希望完成的事件，我这里定义了一个<code>OnItemChangeListener&lt;T&gt;</code>接口，其中<code>&lt;T&gt;</code>为<code>RecyclerView.Adapter</code>接收的<code>List</code>的数据类型。</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnItemChangeListener</span>&lt;<span class="title">T</span>&gt; </span>{
+
+    <span class="function"><span class="keyword">boolean</span> <span class="title">onItemMove</span><span class="params">(<span class="keyword">int</span> fromPosition, <span class="keyword">int</span> toPosition)</span></span>;
+
+    <span class="function"><span class="keyword">void</span> <span class="title">onItemRemoved</span><span class="params">(<span class="keyword">int</span> position)</span></span>;
+
+    <span class="function"><span class="keyword">void</span> <span class="title">onItemInsert</span><span class="params">(<span class="keyword">int</span> position, T data)</span></span>;
+}
+</code></pre><p>为<code>DragItemTouchHelperCallback</code>定义一个构造方法，接收<code>OnItemChangeListener</code>参数，于是我们就可以在刚刚提到的两个方法中做如下实现：</p>
+<pre><code><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onMove</span><span class="params">(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder <span class="keyword">target</span>)</span> </span>{
+    <span class="keyword">if</span> (source.getItemViewType() != <span class="keyword">target</span>.getItemViewType()) {
+        <span class="comment">//the viewTypes between the source and the target are not same</span>
+        <span class="comment">//can't move</span>
+        <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+            mOnItemChangeListener.onItemMove(source.getAdapterPosition(), <span class="keyword">target</span>.getAdapterPosition());
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+
+<span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onSwiped</span><span class="params">(RecyclerView.ViewHolder viewHolder, <span class="keyword">int</span> direction)</span> </span>{
+    mOnItemChangeListener.onItemRemoved(viewHolder.getAdapterPosition());
+}
+</code></pre><p>之后只要让我们定义的Adapter去实现这个接口即可。</p>
+<p>除此之外，我们还需要一些其他方法的支持：</p>
+<pre><code><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">isLongPressDragEnabled</span><span class="params">()</span> </span>{
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+
+<span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">isItemViewSwipeEnabled</span><span class="params">()</span> </span>{
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+</code></pre><p>第一个是方法是是否支持长按拖拽的动作，第二个是是否允许<code>ItemView</code>在被触摸后启用其滑动操作。</p>
+<p>当开始拖动时，我们可能会希望改变item的背景、文字、图片巴拉巴拉来告诉用户这个view现在处于被拖动的状态，那么通过<code>onSelectedChanged()</code> <code>clearView()</code>两个方法控制<code>ViewHolder</code>的变化，比较简单直接上代码：</p>
+<pre><code><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onSelectedChanged</span><span class="params">(RecyclerView.ViewHolder viewHolder, <span class="keyword">int</span> actionState)</span> </span>{
+    <span class="keyword">if</span> (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+        <span class="comment">//itemView is being dragged</span>
+        <span class="keyword">if</span> (viewHolder <span class="keyword">instanceof</span> BaseDragViewHolder) {
+            ((BaseDragViewHolder) viewHolder).onDrag();
+        }
+    }
+    <span class="keyword">super</span>.onSelectedChanged(viewHolder, actionState);
+}
+
+<span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">clearView</span><span class="params">(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)</span> </span>{
+    <span class="keyword">super</span>.clearView(recyclerView, viewHolder);
+
+    viewHolder.itemView.setAlpha(<span class="number">1.0</span>f);
+    <span class="keyword">if</span> (viewHolder <span class="keyword">instanceof</span> BaseDragViewHolder) {
+        ((BaseDragViewHolder) viewHolder).onDragFinished();
+    }
+}
+</code></pre><p>在定义的<code>BaseDragViewHolder</code>中提供<code>onDrag()</code>及<code>onDragFinished()</code>两个<code>public</code>方法，具体想要如何变化可由子类自行实现。</p>
+<p>定义我们的<code>BaseDragAdapter&lt;T, VH extends BaseDragViewHolder&gt;</code>，泛型T为Adapter要展示的List的数据类型，并实现<code>OnItemChangeListener</code>接口。</p>
+<pre><code>@Override
+<span class="keyword">public</span> <span class="built_in">boolean</span> onItemMove(<span class="built_in">int</span> fromPosition, <span class="built_in">int</span> toPosition) {
+    moveDataInList(fromPosition, toPosition);
+    notifyItemMoved(fromPosition, toPosition);
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+}
+
+<span class="keyword">private</span> <span class="keyword">void</span> moveDataInList(<span class="built_in">int</span> fromPosition, <span class="built_in">int</span> toPosition) {
+    <span class="keyword">if</span> (fromPosition == toPosition) {
+        <span class="keyword">return</span>;
+    }
+    T item = mDatas.<span class="built_in">get</span>(fromPosition);
+    mDatas.remove(item);
+    mDatas.<span class="built_in">add</span>(toPosition, item);
+}
+
+@Override
+<span class="keyword">public</span> <span class="keyword">void</span> onItemInsert(<span class="built_in">int</span> position, T data) {
+    <span class="comment">//auto put the new item at the end</span>
+    mDatas.<span class="built_in">add</span>(data);
+    notifyItemInserted(mDatas.<span class="built_in">size</span>() - <span class="number">1</span>);
+    notifyItemRangeChanged(mDatas.<span class="built_in">size</span>() - <span class="number">1</span>, mDatas.<span class="built_in">size</span>());
+}
+</code></pre><p>分别做Item的移动、删除、插入的操作，并通知Adapter更新。在<code>onBindViewHolder</code>中对手指的长按和点击事件做了处理，常规方案，有希望了解的可以查看源码。值得一提的是在长按后调用了<code>DragItemStartListener</code>的<code>onDragStart</code>()方法，该listener由Adapter的构造方法传入，在自定义的RecyclerView中实现：</p>
+<pre><code><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onDragStart</span><span class="params">(ViewHolder viewHolder)</span> </span>{
+    mItemTouchHelper.startDrag(viewHolder);
+}
+</code></pre><p><code>startDrag()</code>为<code>ItemTouchHelper</code>中的方法，通知ViewHolder开始拖拽。</p>
+<p>我们还需要使RecyclerView能够自适应高度，RecyclerView的高度和传统的自定义View不同，是由LayoutManager控制的，Google一下就会有很多关于自定义高度的介绍，很多是LinearLayoutManager的，GridLayout实现的原理类似，重写onMeasure()方法，只不过GridLayout中每个item不再只占一行，所以需要重新计算，具体可看源码(注：并不支持设置了SpanSizeLookup的情况，如果需要在使用SpanSizeLookup的情况下适应高度，需要另行计算)。</p>
+<p>核心的代码就是这些，其余的时一些关于Adapter的设置，对item的长按、点击、插入、删除的回调等，可查看源码自行理解。</p>
+<p><a href="https://github.com/Syehunter/DragLayout" target="_blank" rel="external">Github地址</a></p>
+</span>
       
     </div>
 
@@ -260,7 +386,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Syehunter/" rel="tag">#Syehunter</a>
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/RecyclerView/" rel="tag">#RecyclerView</a>
           
         </div>
       
@@ -269,11 +397,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/29/HeaderToast/" rel="prev">仿Android5.0 Heads-Up风格的Toast提示</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/24/About-2015-Syehunter/" rel="next">About 2015 -- Syehunter</a>
             
           </div>
         </div>
@@ -298,8 +426,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/09/29/Hello World/"
-                   data-title="Hello World" data-url="http://z.sye.space/2015/09/29/Hello World/">
+              <div class="ds-thread" data-thread-key="2016/02/01/DragLayout/"
+                   data-title="DragLayout--可拖拽的RecyclerView(类网易新闻频道管理实现)" data-url="http://z.sye.space/2016/02/01/DragLayout/">
               </div>
             
           </div>
